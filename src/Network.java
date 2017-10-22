@@ -91,6 +91,11 @@ public class Network {
 		return null; //no path found
 	}
 	
+	public boolean checkPath(ArrayList<Link> links) {
+		
+		
+		return true;
+	}
 	
 	private int let2Num (String let) {
 		switch (let.charAt(0)) {

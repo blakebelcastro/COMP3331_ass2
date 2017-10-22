@@ -65,7 +65,7 @@ public class RoutingPerformance {
 		System.out.println("percentage of blocked packets: " + 100*((float)blockedPackets/(float)totalPackets));
 		System.out.println("average number of hops per circuit: " + ((float)totalHops/(float)successfulRequests));
 		System.out.println("average cumulative propogation delay per circuit: " + ((float)totalPropDelay/(float)successfulRequests));
-		
+		System.out.println("number of successful requests: " + successfulRequests);
 	}
 
 	private void setScheme() {
@@ -114,11 +114,12 @@ public class RoutingPerformance {
 		    totalPackets += nP;
 		}
 		in.close();
-		for (Action a : actions) {
-			a.print();
-		}
+//		for (Action a : actions) {
+//			a.print();
+//		}
 		while (!actions.isEmpty()) {
 			Action a = actions.remove();
+			a.print();
 			if (a.getPath() == null) {
 				System.err.println("No path found!");
 			} else if (a.getType() > 0) {

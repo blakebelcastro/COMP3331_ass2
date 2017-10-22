@@ -89,25 +89,53 @@ public class RoutingPerformance {
 	//that attempt to connect and teardown according to their timings
 	
 	private void createConnections() throws FileNotFoundException, InterruptedException {
-		ArrayList<Connection> cList = new ArrayList<Connection>();
+		
+	    PriorityQueue<Action> actions = new PriorityQueue<Action>();
+		
+		
 		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
-		long startTime = System.nanoTime(); //zero time workload begins
 		while(in.hasNextLine()) {
 		    double start = Double.parseDouble(in.next());
+
 		    String n1 = in.next();
+		    int origin = Network.let2Num(n1);
+		    
 		    String n2 = in.next();
+		    int destination = Network.let2Num(n2);
+		    
+		    Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
+
 		    double duration = Double.parseDouble(in.next());
-		    //create a connection with above info
-		    Connection c = new Connection(network, start, duration, n1, n2, 
-		    		startTime, ROUTING_SCHEME, PACKET_RATE);
-		    c.start();
-		    cList.add(c);
+		    int nP = (int) Math.floor(duration*PACKET_RATE);
+
+		    actions.add(new Action(start, Action.LOAD, path, nP));
+		    actions.add(new Action(start + duration, Action.UNLOAD, path));
 		    totalRequests++;
-		    totalPackets += (int) Math.floor(duration*PACKET_RATE);
+		    totalPackets += nP;
 		}
 		in.close();
-		for (Connection c : cList) {
-			c.join();
+		for (Action a : actions) {
+			a.print();
+		}
+		while (!actions.isEmpty()) {
+			Action a = actions.remove();
+			if (a.getPath() == null) {
+				System.err.println("No path found!");
+			} else if (a.getType() > 0) {
+				if (network.hasCapacity(a.getPath().linkPath())) {
+					successfulRequests++;
+					successfulPackets += a.getNumPackets();
+					totalHops += a.getPath().getNumHops() + 1;
+					totalPropDelay += a.getPath().getTotalDelay();
+					network.changeLoad(a.getPath().linkPath(), a.getType());
+				} else {
+					blockedPackets += a.getNumPackets();
+					System.err.println("Connection blocked: link at capacity.");
+				}
+				
+			} else if (a.getType() < 0) {
+				network.changeLoad(a.getPath().linkPath(), a.getType());
+			}
 		}
 		
 	}

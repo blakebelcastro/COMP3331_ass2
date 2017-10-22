@@ -166,7 +166,7 @@ public class Network {
 		}
 	}
 	
-	public static int num2Let (int num) {
+	public static char num2Let (int num) {
 		switch (num) {
 			case 0:
 				return 'A';
@@ -230,7 +230,7 @@ public class Network {
 		for (Link[] links: graph) {
 			for (Link l: links) {
 				if (l != null) {
-					System.out.print("LINK: " + l.getStart() + "->" + l.getEnd());
+					System.out.print("LINK: " + Network.num2Let(l.getStart()) + "->" + Network.num2Let(l.getEnd()));
 					System.out.println(" LOAD: " + l.getLoad());
 				}
 			}

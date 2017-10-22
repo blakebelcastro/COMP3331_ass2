@@ -5,6 +5,7 @@ public class Link {
 	private int capacity;
 	
 	public Link(int delay, int capacity) {
+		
 		this.delay = delay;
 		this.capacity = capacity;
 	}

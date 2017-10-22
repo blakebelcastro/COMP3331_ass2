@@ -32,9 +32,6 @@ public class RoutingPerformance {
 		
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
 		
-//		createNetwork(rp);
-		
-		
 		setScheme(rp);
 		
 	}
@@ -55,18 +52,5 @@ public class RoutingPerformance {
 		}
 	}
 
-//	private static void createNetwork(RoutingPerformance rp) throws FileNotFoundException {
-//		Scanner in = new Scanner(new FileReader(rp.TOPOLOGY_FILE));
-//		while(in.hasNextLine()) {
-//		    String n1 = in.next();
-//		    String n2 = in.next();
-//		    int delay = Integer.parseInt(in.next());
-//		    int capacity = Integer.parseInt(in.next());
-//		    rp.network.add(n1, n2, delay, capacity);
-//		}
-//		in.close();
-//		rp.network.print();
-//		
-//	}
 
 }

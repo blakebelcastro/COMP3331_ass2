@@ -22,7 +22,7 @@ import java.util.Scanner;
 
 public class Network {
 	
-	private Link[][] n = new Link[26][26];
+	private Link[][] graph = new Link[26][26];
 
 	public Network(String fileName) throws FileNotFoundException {
 		Link[][] network = new Link[26][26];
@@ -35,25 +35,35 @@ public class Network {
 		    network = add(network, n1, n2, delay, capacity);
 		}
 		in.close();
-		this.n = network; 
-		print(this.n);
+		this.graph = network; 
+		print(this.graph);
 	}
 	
-	private Link[][] add(Link[][] n, String n1, String n2, int delay, int capacity) {
+	private Link[][] add(Link[][] g, String n1, String n2, int delay, int capacity) {
 		Link link = new Link(delay, capacity);
+<<<<<<< HEAD
 		n[let2Num(n1)][let2Num(n2)] = link;
 		n[let2Num(n2)][let2Num(n1)] = link;
 		return n;
 >>>>>>> 8c3f907a1fdd050db3ad31c197c32e83d097611e
+=======
+		g[let2Num(n1)][let2Num(n2)] = link;
+		g[let2Num(n2)][let2Num(n1)] = link;
+		return g;
+>>>>>>> faef5a1f16389adc3aa813f7789dcbddd45dd578
 	}
 	
-	private void print(Link[][] n) {
+	private void print(Link[][] g) {
 		for (int i = 0; i < 26; i++) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 			for (Link node : this.graph[i]) {
 				if (node == null) {
 =======
 			for (Link link : n[i]) {
+=======
+			for (Link link : g[i]) {
+>>>>>>> faef5a1f16389adc3aa813f7789dcbddd45dd578
 				if (link == null) {
 >>>>>>> 8c3f907a1fdd050db3ad31c197c32e83d097611e
 					System.out.print("[ -1 ,  -1]\t");

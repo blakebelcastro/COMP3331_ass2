@@ -65,9 +65,9 @@ public class Hop implements Comparable<Hop>{
 		ArrayList<Link> list = this.linkPath();
 	
 		for (Link l: list) {
-			System.out.print(l.getStart() + " --> ");
+			System.out.print(Network.num2Let(l.getStart()) + "->");
 		}
-		System.out.println(list.get(list.size()-1).getEnd());
+		System.out.println(Network.num2Let(list.get(list.size()-1).getEnd()));
 	}
 	
 	@Override

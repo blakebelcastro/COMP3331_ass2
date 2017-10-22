@@ -79,7 +79,7 @@ public class Hop implements Comparable<Hop>{
 		} else if (h.getRoutingScheme().equals("SDP")) {
 			return (this.totalDelay - h.getTotalDelay());
 		} else if (h.getRoutingScheme().equals("LLP")) {
-			return 0; //TODO: implement LLP
+			return (this.link.getLoad()/this.link.getCapacity() - h.getLink().getLoad()/h.getLink().getCapacity());
 		}
 		return 0;
 		

@@ -23,7 +23,6 @@ public class Connection extends Thread {
 		this.startTime = startTime;
 		this.routingScheme = rs;
 		this.packetRate = pr;
-//		System.out.println((this.start - (System.nanoTime() - this.startTime)/1000)/1000);
 	}
 
 
@@ -56,7 +55,6 @@ public class Connection extends Thread {
 		} else {
 			System.err.println("Connection blocked: Link at capacity.");
 		}
-		
 		
 		
 	}

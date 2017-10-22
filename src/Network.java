@@ -4,34 +4,33 @@ import java.util.*;
 public class Network {
 	
 	private static final int MAX_SIZE = 26;
-	private Link[][] graph = new Link[MAX_SIZE][MAX_SIZE];
+	private Link[][] graph;
 
 	public Network(String fileName) throws FileNotFoundException {
-		Link[][] network = new Link[MAX_SIZE][MAX_SIZE];
+		this.graph = new Link[MAX_SIZE][MAX_SIZE];
 		Scanner in = new Scanner(new FileReader(fileName));
 		while(in.hasNextLine()) {
 		    String n1 = in.next();
 		    String n2 = in.next();
 		    int delay = Integer.parseInt(in.next());
 		    int capacity = Integer.parseInt(in.next());
-		    network = add(network, n1, n2, delay, capacity);
+		    add(n1, n2, delay, capacity);
 		}
 		in.close();
-		this.graph = network; 
+//		this.graph = network; 
 //		print(this.graph);
 	}
 	
-	private Link[][] add(Link[][] g, String n1, String n2, int delay, int capacity) {
-		g[let2Num(n1)][let2Num(n2)] = new Link(let2Num(n1), let2Num(n2), delay, capacity);
-		g[let2Num(n2)][let2Num(n1)] = new Link(let2Num(n2), let2Num(n1), delay, capacity);
-		return g;
+	private void add(String n1, String n2, int delay, int capacity) {
+		graph[let2Num(n1)][let2Num(n2)] = new Link(let2Num(n1), let2Num(n2), delay, capacity);
+		graph[let2Num(n2)][let2Num(n1)] = new Link(let2Num(n2), let2Num(n1), delay, capacity);
 	}
 	
 	public void print() {
 		for (int i = 0; i < MAX_SIZE; i++) {
 			for (Link link : graph[i]) {
 				if (link == null) {
-					System.out.print("[ -1, -1, -1]\t");
+					System.out.print("[ -1 ,  -1 ,  -1]\t");
 				} else {
 					String d = String.format("%3d", link.getDelay());
 					String c = String.format("%3d", link.getCapacity());
@@ -104,7 +103,7 @@ public class Network {
 	public void changeLoad(ArrayList<Link> links, int change) {
 		for (Link l: links) {
 			l.setLoad(l.getLoad() + change);
-			this.graph[l.getEnd()][l.getStart()].setLoad(l.getLoad() + change);
+			this.graph[l.getEnd()][l.getStart()].setLoad(this.graph[l.getEnd()][l.getStart()].getLoad() + change);
 		}
 	}
 	

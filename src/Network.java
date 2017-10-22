@@ -55,8 +55,23 @@ public class Network {
 	}
 	
 	
-	public void SHP() {
+	public void SHP(int start, int end) {
+		PriorityQueue<Integer> toVisit = new PriorityQueue<Integer>();
+		ArrayList<Integer> visited = new ArrayList<Integer>();
+		toVisit.add(start);
 		
+		while (!toVisit.isEmpty()) {
+			int curNode =  toVisit.remove();
+			
+			if (curNode == end) return; //arrived
+			visited.add(curNode);
+			for (int node : this.getNeighbours(curNode)) {
+				if (!visited.contains(node)) {
+					toVisit.add(node);
+				}
+			}
+		}
+		return; //no path founds
 	}
 	
 	

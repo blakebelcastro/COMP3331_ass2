@@ -74,8 +74,6 @@ public class Network {
 		
 		ArrayList<Integer> visited = new ArrayList<Integer>();
 		
-//		Hop prevHop = new Hop(null, null, -1);
-		
 		while (!toVisit.isEmpty()) {
 			Hop curHop =  toVisit.remove();
 			if (curHop.getLink().getEnd() == end) {

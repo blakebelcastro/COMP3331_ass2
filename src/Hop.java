@@ -7,17 +7,23 @@ public class Hop implements Comparable<Hop>{
 	private int numHops;
 	private int totalDelay;
 	private String routingScheme;
+	private float LLPratio;
 	
 	public Hop(Link l, Hop h, int n, String rs) {
 		this.link = l;
 		this.prevHop = h;
 		this.numHops = n;
 		int prevDelay = 0;
+		float llpr = (float)l.getLoad()/(float)l.getCapacity();
 		if (h != null) {
 			prevDelay = h.getTotalDelay();
+			if (llpr < h.LLPratio) {
+				llpr = h.LLPratio;
+			}
 		}
 		this.totalDelay = l.getDelay() + prevDelay;
 		this.routingScheme = rs;
+		this.LLPratio = llpr;
 	}
 
 	public int getNumHops() {
@@ -38,6 +44,10 @@ public class Hop implements Comparable<Hop>{
 	
 	public String getRoutingScheme() {
 		return routingScheme;
+	}
+
+	public float getLLPratio() {
+		return LLPratio;
 	}
 
 	/*
@@ -65,9 +75,10 @@ public class Hop implements Comparable<Hop>{
 		ArrayList<Link> list = this.linkPath();
 	
 		for (Link l: list) {
-			System.out.print(Network.num2Let(l.getStart()) + "->");
+			System.out.print(l.getLoad() + " " + Network.num2Let(l.getStart()) + "->");
 		}
 		System.out.println(Network.num2Let(list.get(list.size()-1).getEnd()));
+		
 	}
 	
 	@Override
@@ -79,7 +90,9 @@ public class Hop implements Comparable<Hop>{
 		} else if (h.getRoutingScheme().equals("SDP")) {
 			return (this.totalDelay - h.getTotalDelay());
 		} else if (h.getRoutingScheme().equals("LLP")) {
-			return (this.link.getLoad()/this.link.getCapacity() - h.getLink().getLoad()/h.getLink().getCapacity());
+			if ((this.LLPratio - h.getLLPratio()) < 0) return -1;
+			if ((this.LLPratio - h.getLLPratio()) > 0) return 1;
+			if ((this.LLPratio - h.getLLPratio()) == 0) return 0;
 		}
 		return 0;
 		

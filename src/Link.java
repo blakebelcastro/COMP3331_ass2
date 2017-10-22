@@ -1,12 +1,14 @@
 
 public class Link {
 	
+	private int load;
 	private int start;
 	private int end;
 	private int delay;
 	private int capacity;
 	
 	public Link(int start, int end, int delay, int capacity) {
+		this.load = 0;
 		this.start = start;
 		this.end = end;
 		this.delay = delay;
@@ -27,6 +29,10 @@ public class Link {
 
 	public int getCapacity() {
 		return capacity;
+	}
+	
+	private int getLoad() {
+		return load;
 	}
 	
 	

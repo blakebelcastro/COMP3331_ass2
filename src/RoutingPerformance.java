@@ -56,6 +56,17 @@ public class RoutingPerformance {
 			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
 		}
 	}
+	
+	private void sendPacket(int origin, int destination) {
+		/* Packet p = new Packet(); //make packet from args
+		 * 
+		 * Hop path = pathSearch(start, end, routingScheme)
+		 * 
+		 * if (path == null)
+		 * 
+		 */
+		
+	}
 
 
 }

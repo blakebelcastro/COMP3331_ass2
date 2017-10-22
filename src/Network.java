@@ -226,7 +226,16 @@ public class Network {
 		}
 	}
 	
-	
+	public void printLinks() {
+		for (Link[] links: graph) {
+			for (Link l: links) {
+				if (l != null) {
+					System.out.print("LINK: " + l.getStart() + "->" + l.getEnd());
+					System.out.println(" LOAD: " + l.getLoad());
+				}
+			}
+		}	
+	}
 	
 	
 	

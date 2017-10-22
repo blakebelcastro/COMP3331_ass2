@@ -67,7 +67,7 @@ public class RoutingPerformance {
 		    String n2 = in.next();
 		    float end = Float.parseFloat(in.next());
 		    //create a connection with above info
-		    Connection c = new Connection(network ,start, end, n1, n2, 
+		    Connection c = new Connection(network, start, end, n1, n2, 
 		    		startTime, ROUTING_SCHEME, PACKET_RATE);
 		    c.start();
 		    

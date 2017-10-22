@@ -38,6 +38,8 @@ public class Connection extends Thread {
 		if (path == null) { //no path found
 			System.err.println("No path found!");
 		} else if (this.network.hasCapacity(path.linkPath()) == true) { //capacity available
+			System.out.print("PATH IS: ");
+			path.printPath();
 			this.network.changeLoad(path.linkPath(), 1);
 		}
 		
@@ -49,6 +51,7 @@ public class Connection extends Thread {
 			e.printStackTrace();
 		}
 		//deload
+		this.network.printLinks();
 		this.network.changeLoad(path.linkPath(), -1);
 		
 	}

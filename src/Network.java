@@ -3,10 +3,11 @@ import java.util.*;
 
 public class Network {
 	
-	private Link[][] graph = new Link[26][26];
+	private final int MAX_SIZE = 26;
+	private Link[][] graph = new Link[MAX_SIZE][MAX_SIZE];
 
 	public Network(String fileName) throws FileNotFoundException {
-		Link[][] network = new Link[26][26];
+		Link[][] network = new Link[MAX_SIZE][MAX_SIZE];
 		Scanner in = new Scanner(new FileReader(fileName));
 		while(in.hasNextLine()) {
 		    String n1 = in.next();
@@ -28,7 +29,7 @@ public class Network {
 	}
 	
 	private void print(Link[][] g) {
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < MAX_SIZE; i++) {
 			for (Link link : g[i]) {
 				if (link == null) {
 					System.out.print("[ -1 ,  -1]\t");
@@ -46,7 +47,7 @@ public class Network {
 	private ArrayList<Integer> getNeighbours(int node) {
 		ArrayList<Integer> neighbours = new ArrayList<Integer>();
 		
-		for (int n = 0; n < 26; n++) {
+		for (int n = 0; n < MAX_SIZE; n++) {
 			if (this.graph[node][n] != null) {
 				neighbours.add(n);
 			}

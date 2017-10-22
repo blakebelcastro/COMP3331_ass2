@@ -1,3 +1,5 @@
+import java.io.*;
+import java.util.*;
 
 public class RoutingPerformance {
 	
@@ -6,6 +8,7 @@ public class RoutingPerformance {
 	private String TOPOLOGY_FILE;
 	private String WORKLOAD_FILE;
 	private int PACKET_RATE;
+	private Network network;
 
 	
 	public RoutingPerformance(String nETWORK_SCHEME, String rOUTING_SCHEME, String tOPOLOGY_FILE, String wORKLOAD_FILE,
@@ -16,9 +19,10 @@ public class RoutingPerformance {
 		this.TOPOLOGY_FILE = tOPOLOGY_FILE;
 		this.WORKLOAD_FILE = wORKLOAD_FILE;
 		this.PACKET_RATE = Integer.parseInt(pACKET_RATE);
+		this.network = new Network();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
 		if (args.length != 5) {
 			System.err.println("Incorrect Usage: <NETWORK_SCHEME> <ROUTING_SCHEME> "
@@ -27,7 +31,44 @@ public class RoutingPerformance {
 		}
 		
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
+		
+		createNetwork(rp);
+		
+		setScheme(rp);
+		
+	}
 
+	private static void setScheme(RoutingPerformance rp) {
+		String ns = rp.NETWORK_SCHEME;
+		if (ns.equals("PACKET") || ns.equals("CIRCUIT")) {
+			System.out.println("The network scheme will follow: " + ns);
+		} else {
+			System.err.println("Network scheme must be 'PACKET' or 'CIRCUIT'");
+		}
+		
+		String rs = rp.ROUTING_SCHEME;
+		if (rs.equals("SHP") || rs.equals("SDP") || rs.equals("LLP")) {
+			System.out.println("The routing scheme will follow: " + rs);
+		} else {
+			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
+		}
+	}
+
+	private static void createNetwork(RoutingPerformance rp) throws FileNotFoundException {
+		Scanner in = new Scanner(new FileReader(rp.TOPOLOGY_FILE));
+		StringBuilder sb = new StringBuilder();
+		while(in.hasNextLine()) {
+		    String n1 = in.next();
+		    String n2 = in.next();
+		    int delay = Integer.parseInt(in.next());
+		    int capacity = Integer.parseInt(in.next());
+		    rp.network.add(n1, n2, delay, capacity);
+		}
+		in.close();
+		rp.network.print();
+		String network = sb.toString();
+		System.out.println(network);
+		
 	}
 
 }

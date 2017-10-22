@@ -4,17 +4,18 @@ public class Hop implements Comparable<Hop>{
 	private Hop prevHop;
 	private int numHops;
 	private int totalDelay;
-	private String networkScheme;
+	private String routingScheme;
 	
-	public Hop(Link l, Hop h, int nH) {
+	public Hop(Link l, Hop h, int n, String rs) {
 		this.link = l;
 		this.prevHop = h;
-		this.numHops = nH;
+		this.numHops = n;
 		int prevDelay = 0;
 		if (h != null) {
 			prevDelay = h.getTotalDelay();
 		}
 		this.totalDelay = l.getDelay() + prevDelay;
+		this.routingScheme = rs;
 	}
 
 	public int getNumHops() {
@@ -33,8 +34,8 @@ public class Hop implements Comparable<Hop>{
 		return prevHop;
 	}
 	
-	public String getNetworkScheme() {
-		return networkScheme;
+	public String getRoutingScheme() {
+		return routingScheme;
 	}
 
 	private void printPath() {
@@ -50,12 +51,11 @@ public class Hop implements Comparable<Hop>{
 	public int compareTo(Hop h) {
 		if (h == null) {
 			return 0;
-		} else if (h.getNetworkScheme().equals("SHP")) {
+		} else if (h.getRoutingScheme().equals("SHP")) {
 			return (this.numHops - h.getNumHops());
-		} else if (h.getNetworkScheme().equals("SDP")) {
-			
+		} else if (h.getRoutingScheme().equals("SDP")) {
 			return (this.totalDelay - h.getTotalDelay());
-		} else if (h.getNetworkScheme().equals("LLP")) {
+		} else if (h.getRoutingScheme().equals("LLP")) {
 			return 0; //TODO: implement LLP
 		}
 		return 0;

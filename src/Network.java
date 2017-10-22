@@ -43,7 +43,7 @@ public class Network {
 		
 	}
 	
-	private ArrayList<Hop> getNeighbours(int node, Hop prevHop) {
+	private ArrayList<Hop> getNeighbours(int node, Hop prevHop, String routingScheme) {
 		ArrayList<Hop> neighbours = new ArrayList<Hop>();
 		
 		for (Link l : this.graph[node]) {
@@ -55,14 +55,14 @@ public class Network {
 				} else {
 					numHops = 0;
 				}
-				neighbours.add(new Hop(l, prevHop, numHops));
+				neighbours.add(new Hop(l, prevHop, numHops, routingScheme));
 			}
 		}		
 		return neighbours;
 	}
 	
 	
-	public Hop SHP(int start, int end) {
+	public Hop pathSearch(int start, int end, String routingScheme) {
 		if (start == end) {
 			return null;	//never going to happen so null
 		}
@@ -70,7 +70,7 @@ public class Network {
 		
 		
 		PriorityQueue<Hop> toVisit = new PriorityQueue<Hop>();
-		toVisit.addAll(getNeighbours(start, null));
+		toVisit.addAll(getNeighbours(start, null, routingScheme));
 		
 		ArrayList<Integer> visited = new ArrayList<Integer>();
 		
@@ -82,7 +82,7 @@ public class Network {
 				return curHop; //arrived
 			}
 			visited.add(curHop.getLink().getEnd());
-			for (Hop h : this.getNeighbours(curHop.getLink().getEnd(), curHop)) {
+			for (Hop h : this.getNeighbours(curHop.getLink().getEnd(), curHop, routingScheme)) {
 				if (!visited.contains(h.getLink().getEnd())) {
 					toVisit.add(h);
 				}

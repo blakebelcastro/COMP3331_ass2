@@ -97,7 +97,7 @@ public class Network {
 		return true;
 	}
 	
-	private int let2Num (String let) {
+	public static int let2Num (String let) {
 		switch (let.charAt(0)) {
 			case 'A':
 				return 0;
@@ -157,7 +157,7 @@ public class Network {
 		}
 	}
 	
-	private int num2Let (int num) {
+	public static int num2Let (int num) {
 		switch (num) {
 			case 0:
 				return 'A';

@@ -2,32 +2,43 @@ import java.util.*;
 
 public class Connection extends Thread {
 	
-	long time;
-	Hop lastHop;
-	ArrayList<Link> path;
+	long start;
+	long end;
+	int origin;
+	int destination;
+	long startTime;
+	Network network;
+	String routingScheme;
+	int packetRate;
 	
 	
-	
-	
-	public Connection(Hop lastHop) {
-		this.lastHop = lastHop;
-		this.path = lastHop.linkPath();
+
+	public Connection(Network n, float start, float end, String origin, 
+			String destination, long startTime, String rs, int pr) {
+		this.network = n;
+		this.start = (long) start * 1000000;
+		this.end = (long) end * 1000000;
+		this.origin = Network.let2Num(origin);
+		this.destination = Network.let2Num(destination);
+		this.startTime = startTime;
+		this.routingScheme = rs;
+		this.packetRate = pr;
 	}
 
-	public void setTime(long time) {
-		this.time = time;
-	}
 
 	public void run() {
-		this.setTime(System.nanoTime());
-		for (Link l : this.path) {
-			try {
-				Thread.sleep(l.getDelay());
-				System.out.println((System.nanoTime() - this.time)/1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			Thread.sleep((this.start - System.nanoTime() + this.startTime)/1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Hop path = network.pathSearch(origin, destination, routingScheme);
+
+		if (path == null) { //no path found
+			System.err.println("No path found!");
+		} else {
+			for(Link l : path.linkPath());
 		}
 	}
 	

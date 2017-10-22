@@ -38,22 +38,26 @@ public class Connection extends Thread {
 
 		if (path == null) { //no path found
 			System.err.println("No path found!");
-		} else if (this.network.hasCapacity(path.linkPath()) == true) { //capacity available
+		} else if (this.network.hasCapacity(path.linkPath())) { //capacity available
 			System.out.print("PATH IS: ");
 			path.printPath();
 			this.network.changeLoad(path.linkPath(), 1);
+			
+			//teardown
+			try {
+				Thread.sleep((this.end - this.start)/1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//deload
+			this.network.printLinks();
+			this.network.changeLoad(path.linkPath(), -1);
+		} else {
+			System.err.println("Connection blocked: Link at capacity.");
 		}
 		
-		//teardown
-		try {
-			Thread.sleep((this.end - this.start)/1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//deload
-		this.network.printLinks();
-		this.network.changeLoad(path.linkPath(), -1);
+		
 		
 	}
 	

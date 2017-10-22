@@ -36,6 +36,7 @@ public class RoutingPerformance {
 		
 		
 		rp.createConnections();
+		rp.network.print();
 	}
 
 	private void setScheme() {

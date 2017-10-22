@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Network {
 	
-	private final int MAX_SIZE = 26;
+	private static final int MAX_SIZE = 26;
 	private Link[][] graph = new Link[MAX_SIZE][MAX_SIZE];
 
 	public Network(String fileName) throws FileNotFoundException {
@@ -27,15 +27,16 @@ public class Network {
 		return g;
 	}
 	
-	private void print(Link[][] g) {
+	public void print() {
 		for (int i = 0; i < MAX_SIZE; i++) {
-			for (Link link : g[i]) {
+			for (Link link : graph[i]) {
 				if (link == null) {
-					System.out.print("[ -1 ,  -1]\t");
+					System.out.print("[ -1, -1, -1]\t");
 				} else {
 					String d = String.format("%3d", link.getDelay());
 					String c = String.format("%3d", link.getCapacity());
-					System.out.print("[" + d + " , " + c + "]\t");
+					String l = String.format("%3d", link.getLoad());
+					System.out.print("[" + d + " , " + c + " , "+ l + "]\t");
 				}
 			}
 			System.out.println();
@@ -103,6 +104,7 @@ public class Network {
 	public void changeLoad(ArrayList<Link> links, int change) {
 		for (Link l: links) {
 			l.setLoad(l.getLoad() + change);
+			this.graph[l.getEnd()][l.getStart()].setLoad(l.getLoad() + change);
 		}
 	}
 	

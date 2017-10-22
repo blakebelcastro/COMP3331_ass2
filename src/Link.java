@@ -31,7 +31,7 @@ public class Link {
 		return capacity;
 	}
 	
-	private int getLoad() {
+	public int getLoad() {
 		return load;
 	}
 	

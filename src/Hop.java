@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class Hop implements Comparable<Hop>{
 	private Link link;
@@ -38,13 +40,35 @@ public class Hop implements Comparable<Hop>{
 		return routingScheme;
 	}
 
-	private void printPath() {
+	/*
+	 * Reverse the obtained path and so it prints
+	 * from start to end correctly
+	 */
+	public ArrayList<Link> linkPath() {
+		Stack<Link> links = new Stack<Link>();
+		ArrayList<Link> path = new ArrayList<Link>();
+		links.push(this.link);
+		Hop h = this.prevHop;
 		
-//		Hop h = this.prevHop;
-//		while (this.prevHop != null) {
-//			System.out.println(this.link.getStart() + "-->" + this.link.getEnd());
-//			
-//		}
+		while (h != null) {
+			links.push(h.getLink());
+			h = h.getPrevHop();
+		}
+		
+		while (!links.isEmpty()) {
+			path.add(links.pop());
+		}
+		
+		return path;
+	}
+	
+	public void printPath() {
+		ArrayList<Link> list = this.linkPath();
+	
+		for (Link l: list) {
+			System.out.print(l.getStart() + " --> ");
+		}
+		System.out.println(list.get(list.size()-1).getEnd());
 	}
 	
 	@Override

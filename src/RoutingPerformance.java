@@ -32,40 +32,38 @@ public class RoutingPerformance {
 		
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
 		
-		setScheme(rp);
+		rp.setScheme();
 		
 	}
 
-	private static void setScheme(RoutingPerformance rp) {
-		String ns = rp.NETWORK_SCHEME;
+	private void setScheme() {
+		String ns = NETWORK_SCHEME;
 		if (ns.equals("PACKET") || ns.equals("CIRCUIT")) {
 			System.out.println("The network scheme will follow: " + ns);
 		} else {
 			System.err.println("Network scheme must be 'PACKET' or 'CIRCUIT'");
 		}
 		
-		String rs = rp.ROUTING_SCHEME;
+		String rs = this.ROUTING_SCHEME;
 		if (rs.equals("SHP") || rs.equals("SDP") || rs.equals("LLP")) {
 			System.out.println("The routing scheme will follow: " + rs);
-			Hop h = rp.network.pathSearch(0, 3, rs);
-			while (h != null) {
-				System.out.println(h.getLink().getStart() + "-->" + h.getLink().getEnd());
-				h = h.getPrevHop();
-			}
+			Hop h = this.network.pathSearch(0, 3, rs);
+			h.printPath();
 		} else {
 			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
 		}
 	}
 	
 	private void sendPacket(int origin, int destination) {
-		/* Packet p = new Packet(); //make packet from args
-		 * 
-		 * Hop path = pathSearch(start, end, routingScheme)
-		 * 
-		 * if (path == null)
-		 * 
-		 */
+		Packet p = new Packet(); //make packet from args
+		Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
 		
+		if (path == null) { //no path found
+			System.out.println("No path found!");
+		} else {
+			
+		}
+				
 	}
 
 

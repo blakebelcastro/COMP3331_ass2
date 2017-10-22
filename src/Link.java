@@ -34,6 +34,10 @@ public class Link {
 	public int getLoad() {
 		return load;
 	}
+
+	public void setLoad(int i) {
+		this.load = i;
+	}
 	
 	
 	

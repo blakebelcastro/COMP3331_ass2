@@ -37,9 +37,20 @@ public class Connection extends Thread {
 
 		if (path == null) { //no path found
 			System.err.println("No path found!");
-		} else {
-			for(Link l : path.linkPath());
+		} else if (this.network.hasCapacity(path.linkPath()) == true) { //capacity available
+			this.network.changeLoad(path.linkPath(), 1);
 		}
+		
+		//teardown
+		try {
+			Thread.sleep((this.end - this.start)/1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//deload
+		this.network.changeLoad(path.linkPath(), -1);
+		
 	}
 	
 	

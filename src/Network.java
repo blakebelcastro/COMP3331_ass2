@@ -91,10 +91,19 @@ public class Network {
 		return null; //no path found
 	}
 	
-	public boolean checkPath(ArrayList<Link> links) {
-		
-		
+	//returns false if any links are at capacity, true otherwise
+	public boolean hasCapacity(ArrayList<Link> links) {
+		for (Link l: links) {
+			if (l.getLoad() == l.getCapacity()) return false;
+		}
 		return true;
+	}
+	
+	//changes the load for each link in a circuit
+	public void changeLoad(ArrayList<Link> links, int change) {
+		for (Link l: links) {
+			l.setLoad(l.getLoad() + change);
+		}
 	}
 	
 	public static int let2Num (String let) {

@@ -34,6 +34,7 @@ public class RoutingPerformance {
 		
 		rp.setScheme();
 		
+		rp.sendPacket(0, 3);
 	}
 
 	private void setScheme() {
@@ -47,21 +48,22 @@ public class RoutingPerformance {
 		String rs = this.ROUTING_SCHEME;
 		if (rs.equals("SHP") || rs.equals("SDP") || rs.equals("LLP")) {
 			System.out.println("The routing scheme will follow: " + rs);
-			Hop h = this.network.pathSearch(0, 3, rs);
-			h.printPath();
+			
 		} else {
 			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
 		}
 	}
 	
 	private void sendPacket(int origin, int destination) {
-		Packet p = new Packet(); //make packet from args
+		
+		
 		Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
 		
 		if (path == null) { //no path found
 			System.out.println("No path found!");
 		} else {
-			
+			Packet p = new Packet(path); //make packet from args
+			p.start();
 		}
 				
 	}

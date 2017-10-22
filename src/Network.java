@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Network {
 	
-	private Link[][] n = new Link[26][26];
+	private Link[][] graph = new Link[26][26];
 
 	public Network(String fileName) throws FileNotFoundException {
 		Link[][] network = new Link[26][26];
@@ -17,20 +17,20 @@ public class Network {
 		    network = add(network, n1, n2, delay, capacity);
 		}
 		in.close();
-		this.n = network; 
-		print(this.n);
+		this.graph = network; 
+		print(this.graph);
 	}
 	
-	private Link[][] add(Link[][] n, String n1, String n2, int delay, int capacity) {
+	private Link[][] add(Link[][] g, String n1, String n2, int delay, int capacity) {
 		Link link = new Link(delay, capacity);
-		n[let2Num(n1)][let2Num(n2)] = link;
-		n[let2Num(n2)][let2Num(n1)] = link;
-		return n;
+		g[let2Num(n1)][let2Num(n2)] = link;
+		g[let2Num(n2)][let2Num(n1)] = link;
+		return g;
 	}
 	
-	private void print(Link[][] n) {
+	private void print(Link[][] g) {
 		for (int i = 0; i < 26; i++) {
-			for (Link link : n[i]) {
+			for (Link link : g[i]) {
 				if (link == null) {
 					System.out.print("[ -1 ,  -1]\t");
 				} else {

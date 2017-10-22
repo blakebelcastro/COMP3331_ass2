@@ -47,6 +47,11 @@ public class RoutingPerformance {
 		String rs = rp.ROUTING_SCHEME;
 		if (rs.equals("SHP") || rs.equals("SDP") || rs.equals("LLP")) {
 			System.out.println("The routing scheme will follow: " + rs);
+			Hop h = rp.network.SHP(0, 15);
+			while (h != null) {
+				System.out.println(h.getLink().getStart() + "-->" + h.getLink().getEnd());
+				h = h.getPrevHop();
+			}
 		} else {
 			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
 		}

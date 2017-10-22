@@ -18,13 +18,12 @@ public class Network {
 		}
 		in.close();
 		this.graph = network; 
-		print(this.graph);
+//		print(this.graph);
 	}
 	
 	private Link[][] add(Link[][] g, String n1, String n2, int delay, int capacity) {
-		Link link = new Link(delay, capacity);
-		g[let2Num(n1)][let2Num(n2)] = link;
-		g[let2Num(n2)][let2Num(n1)] = link;
+		g[let2Num(n1)][let2Num(n2)] = new Link(let2Num(n1), let2Num(n2), delay, capacity);
+		g[let2Num(n2)][let2Num(n1)] = new Link(let2Num(n2), let2Num(n1), delay, capacity);
 		return g;
 	}
 	
@@ -44,35 +43,52 @@ public class Network {
 		
 	}
 	
-	private ArrayList<Integer> getNeighbours(int node) {
-		ArrayList<Integer> neighbours = new ArrayList<Integer>();
+	private ArrayList<Hop> getNeighbours(int node, Hop prevHop) {
+		ArrayList<Hop> neighbours = new ArrayList<Hop>();
 		
-		for (int n = 0; n < MAX_SIZE; n++) {
-			if (this.graph[node][n] != null) {
-				neighbours.add(n);
+		for (Link l : this.graph[node]) {
+			if (l != null) {
+				//create hop
+				int numHops;
+				if (prevHop != null) {
+					numHops = prevHop.getNumHops() + 1;
+				} else {
+					numHops = 0;
+				}
+				neighbours.add(new Hop(l, prevHop, numHops));
 			}
 		}		
 		return neighbours;
 	}
 	
 	
-	public void SHP(int start, int end) {
-		PriorityQueue<Integer> toVisit = new PriorityQueue<Integer>();
+	public Hop SHP(int start, int end) {
+		if (start == end) {
+			return null;	//never going to happen so null
+		}
+		
+		
+		
+		PriorityQueue<Hop> toVisit = new PriorityQueue<Hop>();
+		toVisit.addAll(getNeighbours(start, null));
+		
 		ArrayList<Integer> visited = new ArrayList<Integer>();
-		toVisit.add(start);
+		
+//		Hop prevHop = new Hop(null, null, -1);
 		
 		while (!toVisit.isEmpty()) {
-			int curNode =  toVisit.remove();
-			
-			if (curNode == end) return; //arrived
-			visited.add(curNode);
-			for (int node : this.getNeighbours(curNode)) {
-				if (!visited.contains(node)) {
-					toVisit.add(node);
+			Hop curHop =  toVisit.remove();
+			if (curHop.getLink().getEnd() == end) {
+				return curHop; //arrived
+			}
+			visited.add(curHop.getLink().getEnd());
+			for (Hop h : this.getNeighbours(curHop.getLink().getEnd(), curHop)) {
+				if (!visited.contains(h.getLink().getEnd())) {
+					toVisit.add(h);
 				}
 			}
 		}
-		return; //no path founds
+		return null; //no path founds
 	}
 	
 	

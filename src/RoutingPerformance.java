@@ -62,10 +62,10 @@ public class RoutingPerformance {
 		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
 		long startTime = System.nanoTime(); //zero time workload begins
 		while(in.hasNextLine()) {
-		    float start = Float.parseFloat(in.next());
+		    double start = Double.parseDouble(in.next());
 		    String n1 = in.next();
 		    String n2 = in.next();
-		    float end = Float.parseFloat(in.next());
+		    double end = Double.parseDouble(in.next());
 		    //create a connection with above info
 		    Connection c = new Connection(network, start, end, n1, n2, 
 		    		startTime, ROUTING_SCHEME, PACKET_RATE);

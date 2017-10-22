@@ -13,22 +13,23 @@ public class Connection extends Thread {
 	
 	
 
-	public Connection(Network n, float start, float end, String origin, 
+	public Connection(Network n, double start, double end, String origin, 
 			String destination, long startTime, String rs, int pr) {
 		this.network = n;
-		this.start = (long) start * 1000000;
-		this.end = (long) end * 1000000;
+		this.start = (long)(start * 1000000);
+		this.end = (long)(end * 1000000);
 		this.origin = Network.let2Num(origin);
 		this.destination = Network.let2Num(destination);
 		this.startTime = startTime;
 		this.routingScheme = rs;
 		this.packetRate = pr;
+//		System.out.println((this.start - (System.nanoTime() - this.startTime)/1000)/1000);
 	}
 
 
 	public void run() {
 		try {
-			Thread.sleep((this.start - System.nanoTime() + this.startTime)/1000);
+			Thread.sleep((this.start - (System.nanoTime() - this.startTime)/1000)/1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

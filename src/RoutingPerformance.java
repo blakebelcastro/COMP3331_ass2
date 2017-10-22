@@ -12,14 +12,14 @@ public class RoutingPerformance {
 
 	
 	public RoutingPerformance(String nETWORK_SCHEME, String rOUTING_SCHEME, String tOPOLOGY_FILE, String wORKLOAD_FILE,
-			String pACKET_RATE) {
+			String pACKET_RATE) throws FileNotFoundException {
 		
 		this.NETWORK_SCHEME = nETWORK_SCHEME;
 		this.ROUTING_SCHEME = rOUTING_SCHEME;
 		this.TOPOLOGY_FILE = tOPOLOGY_FILE;
 		this.WORKLOAD_FILE = wORKLOAD_FILE;
 		this.PACKET_RATE = Integer.parseInt(pACKET_RATE);
-		this.network = new Network();
+		this.network = new Network(tOPOLOGY_FILE);
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {
@@ -32,7 +32,8 @@ public class RoutingPerformance {
 		
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
 		
-		createNetwork(rp);
+//		createNetwork(rp);
+		
 		
 		setScheme(rp);
 		
@@ -54,21 +55,18 @@ public class RoutingPerformance {
 		}
 	}
 
-	private static void createNetwork(RoutingPerformance rp) throws FileNotFoundException {
-		Scanner in = new Scanner(new FileReader(rp.TOPOLOGY_FILE));
-		StringBuilder sb = new StringBuilder();
-		while(in.hasNextLine()) {
-		    String n1 = in.next();
-		    String n2 = in.next();
-		    int delay = Integer.parseInt(in.next());
-		    int capacity = Integer.parseInt(in.next());
-		    rp.network.add(n1, n2, delay, capacity);
-		}
-		in.close();
-		rp.network.print();
-		String network = sb.toString();
-		System.out.println(network);
-		
-	}
+//	private static void createNetwork(RoutingPerformance rp) throws FileNotFoundException {
+//		Scanner in = new Scanner(new FileReader(rp.TOPOLOGY_FILE));
+//		while(in.hasNextLine()) {
+//		    String n1 = in.next();
+//		    String n2 = in.next();
+//		    int delay = Integer.parseInt(in.next());
+//		    int capacity = Integer.parseInt(in.next());
+//		    rp.network.add(n1, n2, delay, capacity);
+//		}
+//		in.close();
+//		rp.network.print();
+//		
+//	}
 
 }

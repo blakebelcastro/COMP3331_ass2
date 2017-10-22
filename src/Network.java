@@ -1,21 +1,24 @@
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class Network {
 	
-	private Link[][] n;
+	private Link[][] graph;
 
 	public Network() {
-		this.n = new Link[26][26];
+		this.graph = new Link[26][26];
 	}
 	
+	//adds a node
 	public void add(String n1, String n2, int delay, int capacity) {
 		Link link = new Link(delay, capacity);
-		this.n[let2Num(n1)][let2Num(n2)] = link;
-		this.n[let2Num(n2)][let2Num(n1)] = link;
+		this.graph[let2Num(n1)][let2Num(n2)] = link;
+		this.graph[let2Num(n2)][let2Num(n1)] = link;
 	}
 	
 	public void print() {
 		for (int i = 0; i < 26; i++) {
-			for (Link node : this.n[i]) {
+			for (Link node : this.graph[i]) {
 				if (node == null) {
 					System.out.print("[ -1 ,  -1]\t");
 				} else {
@@ -29,13 +32,23 @@ public class Network {
 		
 	}
 	
-	private void getNeighbours() {
+	//finds all neighbouring nodes
+	private ArrayList<Integer> getNeighbours(int node) {
+		ArrayList<Integer> neighbours = new ArrayList<Integer>();
 		
+		for (int n = 0; n < 26; n++) {
+			if (this.graph[node][n] != null) {
+				neighbours.add(n);
+			}
+		}		
+		return neighbours;
 	}
 	
+	//Uniform cost searc/BFS/Djikstras
+	
 	public void SHP() {
-		
-	}
+		PriorityQueue<Integer> q = new PriorityQueue<Integer>();
+ 	}
 	
 	
 	private int let2Num (String let) {

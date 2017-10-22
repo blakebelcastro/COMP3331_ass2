@@ -33,7 +33,7 @@ public class RoutingPerformance {
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
 		rp.setScheme();
 		
-		long start_time = System.nanoTime(); //zero time workload begins
+		
 		
 		rp.createConnections();
 	}
@@ -60,12 +60,17 @@ public class RoutingPerformance {
 	
 	private void createConnections() throws FileNotFoundException {
 		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
+		long startTime = System.nanoTime(); //zero time workload begins
 		while(in.hasNextLine()) {
 		    float start = Float.parseFloat(in.next());
 		    String n1 = in.next();
 		    String n2 = in.next();
 		    float end = Float.parseFloat(in.next());
 		    //create a connection with above info
+		    Connection c = new Connection(network ,start, end, n1, n2, 
+		    		startTime, ROUTING_SCHEME, PACKET_RATE);
+		    c.start();
+		    
 		}
 		in.close();
 	}

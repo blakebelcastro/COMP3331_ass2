@@ -3,7 +3,7 @@ import java.util.*;
 public class Connection extends Thread {
 	
 	long start;
-	long end;
+	long duration;
 	int origin;
 	int destination;
 	long startTime;
@@ -17,7 +17,7 @@ public class Connection extends Thread {
 			String destination, long startTime, String rs, int pr) {
 		this.network = n;
 		this.start = (long)(start * 1000000);
-		this.end = (long)(end * 1000000);
+		this.duration = (long)(end * 1000000);
 		this.origin = Network.let2Num(origin);
 		this.destination = Network.let2Num(destination);
 		this.startTime = startTime;
@@ -44,7 +44,7 @@ public class Connection extends Thread {
 			
 			//teardown
 			try {
-				Thread.sleep((this.end - this.start)/1000);
+				Thread.sleep((duration)/1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

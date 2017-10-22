@@ -66,9 +66,9 @@ public class RoutingPerformance {
 		    double start = Double.parseDouble(in.next());
 		    String n1 = in.next();
 		    String n2 = in.next();
-		    double end = Double.parseDouble(in.next());
+		    double duration = Double.parseDouble(in.next());
 		    //create a connection with above info
-		    Connection c = new Connection(network, start, end, n1, n2, 
+		    Connection c = new Connection(network, start, duration, n1, n2, 
 		    		startTime, ROUTING_SCHEME, PACKET_RATE);
 		    c.start();
 		    

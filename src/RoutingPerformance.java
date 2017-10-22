@@ -17,7 +17,7 @@ public class RoutingPerformance {
 	private static int successfulPackets;
 	private static int blockedPackets;
 	private static int totalHops;
-	private int totalPropDelay;
+	private static int totalPropDelay;
 
 	
 	public RoutingPerformance(String nETWORK_SCHEME, String rOUTING_SCHEME, String tOPOLOGY_FILE, String wORKLOAD_FILE,
@@ -53,6 +53,19 @@ public class RoutingPerformance {
 		
 		rp.network.print();
 		rp.createConnections();
+		rp.printStats();
+	}
+
+	private void printStats() {
+		System.out.println("total number of virtual connection requests: " + totalRequests);
+		System.out.println("total number of packets: " + totalPackets);
+		System.out.println("number of successfully routed packets: " + successfulPackets);
+		System.out.println("percentage of succesfully routed packets: " + 100*((float)successfulPackets/(float)totalPackets));
+		System.out.println("number of blocked packets: " + blockedPackets);
+		System.out.println("percentage of blocked packets: " + 100*((float)blockedPackets/(float)totalPackets));
+		System.out.println("average number of hops per circuit: " + ((float)totalHops/(float)successfulRequests));
+		System.out.println("average cumulative propogation delay per circuit: " + ((float)totalPropDelay/(float)successfulRequests));
+		
 	}
 
 	private void setScheme() {
@@ -126,6 +139,10 @@ public class RoutingPerformance {
 	public static void incBlockedPackets(int numPackets) {
 		blockedPackets+=numPackets;
 		
+	}
+
+	public static void incTotalDelay(int totalDelay) {
+		totalPropDelay+=totalDelay;
 	}
 
 	

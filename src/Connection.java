@@ -42,7 +42,8 @@ public class Connection extends Thread {
 		} else if (this.network.hasCapacity(path.linkPath())) { //capacity available
 			RoutingPerformance.incSuccessfulRequests();
 			RoutingPerformance.incSuccessfulPackets(numPackets);
-			RoutingPerformance.incTotalHops(path.getNumHops());
+			RoutingPerformance.incTotalHops(path.getNumHops()+1);
+			RoutingPerformance.incTotalDelay(path.getTotalDelay());
 			System.out.print("PATH IS: ");
 			path.printPath();
 			this.network.changeLoad(path.linkPath(), 1);

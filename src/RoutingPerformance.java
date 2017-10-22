@@ -9,6 +9,15 @@ public class RoutingPerformance {
 	private String WORKLOAD_FILE;
 	private int PACKET_RATE;
 	private Network network;
+	
+	//statistic variables
+	private int totalRequests;		//number of connection requests received
+	private static int successfulRequests; //successful connections made
+	private int totalPackets;		//
+	private static int successfulPackets;
+	private static int blockedPackets;
+	private static int totalHops;
+	private int totalPropDelay;
 
 	
 	public RoutingPerformance(String nETWORK_SCHEME, String rOUTING_SCHEME, String tOPOLOGY_FILE, String wORKLOAD_FILE,
@@ -20,9 +29,17 @@ public class RoutingPerformance {
 		this.WORKLOAD_FILE = wORKLOAD_FILE;
 		this.PACKET_RATE = Integer.parseInt(pACKET_RATE);
 		this.network = new Network(tOPOLOGY_FILE);
+		
+		this.totalRequests =  0;
+		this.successfulRequests = 0;
+		this.totalPackets = 0;
+		this.successfulPackets = 0;
+		this.blockedPackets = 0;
+		this.totalHops = 0;
+		this.totalPropDelay = 0;
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		
 		if (args.length != 5) {
 			System.err.println("Incorrect Usage: <NETWORK_SCHEME> <ROUTING_SCHEME> "
@@ -36,7 +53,6 @@ public class RoutingPerformance {
 		
 		rp.network.print();
 		rp.createConnections();
-//		rp.network.print();
 	}
 
 	private void setScheme() {
@@ -59,7 +75,8 @@ public class RoutingPerformance {
 	//uses info in a text file to create connection events
 	//that attempt to connect and teardown according to their timings
 	
-	private void createConnections() throws FileNotFoundException {
+	private void createConnections() throws FileNotFoundException, InterruptedException {
+		ArrayList<Connection> cList = new ArrayList<Connection>();
 		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
 		long startTime = System.nanoTime(); //zero time workload begins
 		while(in.hasNextLine()) {
@@ -71,24 +88,46 @@ public class RoutingPerformance {
 		    Connection c = new Connection(network, start, duration, n1, n2, 
 		    		startTime, ROUTING_SCHEME, PACKET_RATE);
 		    c.start();
-		    
+		    cList.add(c);
+		    totalRequests++;
+		    totalPackets += (int) Math.floor(duration*PACKET_RATE);
 		}
 		in.close();
-	}
-	/*
-	private void sendPacket(int origin, int destination) {
-		
-		
-		Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
-		
-		if (path == null) { //no path found
-			System.out.println("No path found!");
-		} else {
-			Packet p = new Packet(path); //make packet from args
-			p.start();
+		for (Connection c : cList) {
+			c.join();
 		}
-				
-	}*/
+		
+	}
 
+	public void setTotalRequests(int totalRequests) {
+		this.totalRequests = totalRequests;
+	}
+
+	public static void incSuccessfulRequests() {
+		successfulRequests++;
+	}
+
+	public void setTotalPackets(int totalPackets) {
+		this.totalPackets = totalPackets;
+	}
+
+	public static void incSuccessfulPackets(int num) {
+		successfulPackets+=num;
+	}
+
+	public static void incTotalHops(int num) {
+		totalHops+=num;
+	}
+
+	public void setTotalPropDelay(int totalPropDelay) {
+		this.totalPropDelay = totalPropDelay;
+	}
+
+	public static void incBlockedPackets(int numPackets) {
+		blockedPackets+=numPackets;
+		
+	}
+
+	
 
 }

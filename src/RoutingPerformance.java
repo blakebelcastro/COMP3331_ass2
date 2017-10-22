@@ -35,8 +35,7 @@ public class RoutingPerformance {
 		
 		long start_time = System.nanoTime(); //zero time workload begins
 		
-		createConnections();
-		
+		rp.createConnections();
 	}
 
 	private void setScheme() {
@@ -50,8 +49,7 @@ public class RoutingPerformance {
 		String rs = this.ROUTING_SCHEME;
 		if (rs.equals("SHP") || rs.equals("SDP") || rs.equals("LLP")) {
 			System.out.println("The routing scheme will follow: " + rs);
-			Hop h = this.network.pathSearch(0, 3, rs);
-			h.printPath();
+			
 		} else {
 			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
 		}
@@ -60,7 +58,7 @@ public class RoutingPerformance {
 	//uses info in a text file to create connection events
 	//that attempt to connect and teardown according to their timings
 	
-	private void createConnections() {
+	private void createConnections() throws FileNotFoundException {
 		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
 		while(in.hasNextLine()) {
 		    float start = Float.parseFloat(in.next());
@@ -71,18 +69,20 @@ public class RoutingPerformance {
 		}
 		in.close();
 	}
-	
+	/*
 	private void sendPacket(int origin, int destination) {
-		Packet p = new Packet(); //make packet from args
+		
+		
 		Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
 		
 		if (path == null) { //no path found
 			System.out.println("No path found!");
 		} else {
-			
+			Packet p = new Packet(path); //make packet from args
+			p.start();
 		}
 				
-	}
+	}*/
 
 
 }

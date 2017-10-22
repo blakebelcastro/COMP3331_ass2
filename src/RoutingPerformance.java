@@ -31,8 +31,11 @@ public class RoutingPerformance {
 		}
 		
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
-		
 		rp.setScheme();
+		
+		long start_time = System.nanoTime(); //zero time workload begins
+		
+		createConnections();
 		
 	}
 
@@ -52,6 +55,21 @@ public class RoutingPerformance {
 		} else {
 			System.err.println("Routing scheme must be 'SHP', 'SDP', or 'LLP'");
 		}
+	}
+	
+	//uses info in a text file to create connection events
+	//that attempt to connect and teardown according to their timings
+	
+	private void createConnections() {
+		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
+		while(in.hasNextLine()) {
+		    float start = Float.parseFloat(in.next());
+		    String n1 = in.next();
+		    String n2 = in.next();
+		    float end = Float.parseFloat(in.next());
+		    //create a connection with above info
+		}
+		in.close();
 	}
 	
 	private void sendPacket(int origin, int destination) {

@@ -88,7 +88,7 @@ public class Network {
 				}
 			}
 		}
-		return null; //no path founds
+		return null; //no path found
 	}
 	
 	

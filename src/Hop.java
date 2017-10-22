@@ -58,7 +58,6 @@ public class Hop implements Comparable<Hop>{
 		while (!links.isEmpty()) {
 			path.add(links.pop());
 		}
-		
 		return path;
 	}
 	

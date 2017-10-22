@@ -5,8 +5,8 @@ public class RoutingPerformance {
 	
 	private String NETWORK_SCHEME;
 	private String ROUTING_SCHEME;
-	private String TOPOLOGY_FILE;
-	private String WORKLOAD_FILE;
+	private File TOPOLOGY_FILE;
+	private File WORKLOAD_FILE;
 	private int PACKET_RATE;
 	private Network network;
 	
@@ -25,8 +25,8 @@ public class RoutingPerformance {
 		
 		this.NETWORK_SCHEME = nETWORK_SCHEME;
 		this.ROUTING_SCHEME = rOUTING_SCHEME;
-		this.TOPOLOGY_FILE = tOPOLOGY_FILE;
-		this.WORKLOAD_FILE = wORKLOAD_FILE;
+		this.TOPOLOGY_FILE = new File(tOPOLOGY_FILE);
+		this.WORKLOAD_FILE = new File(wORKLOAD_FILE);
 		this.PACKET_RATE = Integer.parseInt(pACKET_RATE);
 		this.network = new Network(tOPOLOGY_FILE);
 		
@@ -144,7 +144,4 @@ public class RoutingPerformance {
 	public static void incTotalDelay(int totalDelay) {
 		totalPropDelay+=totalDelay;
 	}
-
-	
-
 }

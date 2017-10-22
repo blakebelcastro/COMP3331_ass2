@@ -1,24 +1,5 @@
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-
-public class Network {
-	
-	private Link[][] graph;
-
-	public Network() {
-		this.graph = new Link[26][26];
-	}
-	
-	//adds a node
-	public void add(String n1, String n2, int delay, int capacity) {
-		Link link = new Link(delay, capacity);
-		this.graph[let2Num(n1)][let2Num(n2)] = link;
-		this.graph[let2Num(n2)][let2Num(n1)] = link;
-=======
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Network {
 	
@@ -41,31 +22,15 @@ public class Network {
 	
 	private Link[][] add(Link[][] g, String n1, String n2, int delay, int capacity) {
 		Link link = new Link(delay, capacity);
-<<<<<<< HEAD
-		n[let2Num(n1)][let2Num(n2)] = link;
-		n[let2Num(n2)][let2Num(n1)] = link;
-		return n;
->>>>>>> 8c3f907a1fdd050db3ad31c197c32e83d097611e
-=======
 		g[let2Num(n1)][let2Num(n2)] = link;
 		g[let2Num(n2)][let2Num(n1)] = link;
 		return g;
->>>>>>> faef5a1f16389adc3aa813f7789dcbddd45dd578
 	}
 	
 	private void print(Link[][] g) {
 		for (int i = 0; i < 26; i++) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-			for (Link node : this.graph[i]) {
-				if (node == null) {
-=======
-			for (Link link : n[i]) {
-=======
 			for (Link link : g[i]) {
->>>>>>> faef5a1f16389adc3aa813f7789dcbddd45dd578
 				if (link == null) {
->>>>>>> 8c3f907a1fdd050db3ad31c197c32e83d097611e
 					System.out.print("[ -1 ,  -1]\t");
 				} else {
 					String d = String.format("%3d", link.getDelay());
@@ -78,7 +43,6 @@ public class Network {
 		
 	}
 	
-	//finds all neighbouring nodes
 	private ArrayList<Integer> getNeighbours(int node) {
 		ArrayList<Integer> neighbours = new ArrayList<Integer>();
 		
@@ -90,11 +54,10 @@ public class Network {
 		return neighbours;
 	}
 	
-	//Uniform cost searc/BFS/Djikstras
 	
 	public void SHP() {
-		PriorityQueue<Integer> q = new PriorityQueue<Integer>();
- 	}
+		
+	}
 	
 	
 	private int let2Num (String let) {

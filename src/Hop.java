@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 
 public class Hop implements Comparable<Hop>{
@@ -17,8 +18,8 @@ public class Hop implements Comparable<Hop>{
 		float llpr = (float)l.getLoad()/(float)l.getCapacity();
 		if (h != null) {
 			prevDelay = h.getTotalDelay();
-			if (llpr < h.LLPratio) {
-				llpr = h.LLPratio;
+			if (llpr < h.getLLPratio()) {
+				llpr = h.getLLPratio();
 			}
 		}
 		this.totalDelay = l.getDelay() + prevDelay;
@@ -75,7 +76,7 @@ public class Hop implements Comparable<Hop>{
 		ArrayList<Link> list = this.linkPath();
 	
 		for (Link l: list) {
-			System.out.print(l.getLoad() + " " + Network.num2Let(l.getStart()) + "->");
+			System.out.print(Network.num2Let(l.getStart()) + "(" + this.LLPratio + ")" + "->");
 		}
 		System.out.println(Network.num2Let(list.get(list.size()-1).getEnd()));
 		
@@ -83,19 +84,24 @@ public class Hop implements Comparable<Hop>{
 	
 	@Override
 	public int compareTo(Hop h) {
+		int retval = 0;
 		if (h == null) {
-			return 0;
+			retval = 0;
 		} else if (h.getRoutingScheme().equals("SHP")) {
-			return (this.numHops - h.getNumHops());
+			retval = (this.numHops - h.getNumHops());
 		} else if (h.getRoutingScheme().equals("SDP")) {
-			return (this.totalDelay - h.getTotalDelay());
+			retval = (this.totalDelay - h.getTotalDelay());
 		} else if (h.getRoutingScheme().equals("LLP")) {
-			if ((this.LLPratio - h.getLLPratio()) < 0) return -1;
-			if ((this.LLPratio - h.getLLPratio()) > 0) return 1;
-			if ((this.LLPratio - h.getLLPratio()) == 0) return 0;
+			if ((this.LLPratio - h.getLLPratio()) < 0) retval = -1;
+			if ((this.LLPratio - h.getLLPratio()) > 0) retval = 1;
+			if ((this.LLPratio - h.getLLPratio()) == 0) retval = 0;
 		}
-		return 0;
-		
+		if (retval == 0) {
+			Random rand = new Random(System.currentTimeMillis());
+			if (rand.nextInt() > 0.5) retval = 1;
+			else retval = -1;
+		}
+		return retval;
 	}
 	
 	

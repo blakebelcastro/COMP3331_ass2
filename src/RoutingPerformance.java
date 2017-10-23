@@ -64,7 +64,7 @@ public class RoutingPerformance {
 		System.out.println("number of blocked packets: " + blockedPackets);
 		System.out.println("percentage of blocked packets: " + String.format("%.2f", 100*((float)blockedPackets/(float)totalPackets)));
 		System.out.println("average number of hops per circuit: " + String.format("%.2f", (float)totalHops/(float)successfulRequests));
-		System.out.println("average cumulative propogation delay per circuit: " + ((float)totalPropDelay/(float)successfulRequests));
+		System.out.println("average cumulative propogation delay per circuit: " + String.format("%.2f", ((float)totalPropDelay/(float)successfulRequests)));
 	}
 
 	private void setScheme() {

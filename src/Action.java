@@ -9,9 +9,18 @@ public class Action implements Comparable<Action> {
 	private int origin;
 	private int destination;
 	private Action pair = null;
+	private Hop unloadPath;
 	
 	
 	
+	public void setUnloadPath(Hop unloadPath) {
+		this.unloadPath = unloadPath;
+	}
+	
+	public Hop getUnloadPath() {
+		return this.unloadPath;
+	}
+
 	public Action(double time, int origin, int destination, int type, int numPackets, Action pair) {
 		this.time = time;
 		this.origin = origin;

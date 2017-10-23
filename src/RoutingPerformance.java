@@ -126,6 +126,7 @@ public class RoutingPerformance {
 				System.err.println("No path found!");
 			} else if (a.getType() > 0) {
 				if (network.hasCapacity(path.linkPath())) {
+					a.getPair().setUnloadPath(path);
 					successfulRequests++;
 					successfulPackets += a.getNumPackets();
 					totalHops += path.getNumHops() + 1;
@@ -138,7 +139,7 @@ public class RoutingPerformance {
 				}
 				
 			} else if (a.getType() < 0) {
-				network.changeLoad(path.linkPath(), a.getType());
+				network.changeLoad(a.getUnloadPath().linkPath(), a.getType());
 			}
 		}
 		

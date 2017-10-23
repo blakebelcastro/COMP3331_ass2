@@ -17,8 +17,6 @@ public class Network {
 		    add(n1, n2, delay, capacity);
 		}
 		in.close();
-//		this.graph = network; 
-//		print(this.graph);
 	}
 	
 	private void add(String n1, String n2, int delay, int capacity) {
@@ -40,7 +38,6 @@ public class Network {
 			}
 			System.out.println();
 		}
-		
 	}
 	
 	private ArrayList<Hop> getNeighbours(int node, Hop prevHop, String routingScheme) {

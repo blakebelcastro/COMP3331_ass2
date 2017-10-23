@@ -11,13 +11,13 @@ public class RoutingPerformance {
 	private Network network;
 	
 	//statistic variables
-	private int totalRequests;		//number of connection requests received
-	private int successfulRequests; //successful connections made
-	private int totalPackets;		//
-	private int successfulPackets;
-	private int blockedPackets;
-	private int totalHops;
-	private int totalPropDelay;
+	private int totalRequests;			// number of connection requests received
+	private int successfulRequests;		// successful connections made
+	private int totalPackets;			// total packets
+	private int successfulPackets;		// successful packets sent
+	private int blockedPackets;			// number of blocked packets
+	private int totalHops;				// total hops (for average)
+	private int totalPropDelay;			// total propagation delay (for average)
 
 	
 	public RoutingPerformance(String nETWORK_SCHEME, String rOUTING_SCHEME, String tOPOLOGY_FILE, String wORKLOAD_FILE,
@@ -65,7 +65,6 @@ public class RoutingPerformance {
 		System.out.println("percentage of blocked packets: " + String.format("%.2f", 100*((float)blockedPackets/(float)totalPackets)));
 		System.out.println("average number of hops per circuit: " + String.format("%.2f", (float)totalHops/(float)successfulRequests));
 		System.out.println("average cumulative propogation delay per circuit: " + ((float)totalPropDelay/(float)successfulRequests));
-//		System.out.println("number of successful requests: " + successfulRequests);
 	}
 
 	private void setScheme() {
@@ -102,8 +101,6 @@ public class RoutingPerformance {
 		    
 		    String n2 = in.next();
 		    int destination = Network.let2Num(n2);
-		    
-//		    Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
 
 		    double duration = Double.parseDouble(in.next());
 		    int nP = (int) Math.floor(duration*PACKET_RATE);
@@ -120,8 +117,6 @@ public class RoutingPerformance {
 			Action a = actions.remove();
 			//a.print();
 			Hop path = network.pathSearch(a.getOrigin(), a.getDestination(), ROUTING_SCHEME);
-			//System.out.print(path.getLLPratio() + ":: ");
-			//path.printPath();
 			if (path == null) {
 				System.err.println("No path found!");
 			} else if (a.getType() > 0) {

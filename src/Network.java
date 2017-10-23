@@ -45,15 +45,13 @@ public class Network {
 	
 	private ArrayList<Hop> getNeighbours(int node, Hop prevHop, String routingScheme) {
 		ArrayList<Hop> neighbours = new ArrayList<Hop>();
+		int numHops = 0;
 		
 		for (Link l : this.graph[node]) {
 			if (l != null) {
 				//create hop
-				int numHops;
 				if (prevHop != null) {
 					numHops = prevHop.getNumHops() + 1;
-				} else {
-					numHops = 0;
 				}
 				neighbours.add(new Hop(l, prevHop, numHops, routingScheme));
 			}
@@ -67,12 +65,11 @@ public class Network {
 			return null;	//never going to happen so null
 		}
 		
-		
-		
 		PriorityQueue<Hop> toVisit = new PriorityQueue<Hop>();
 		toVisit.addAll(getNeighbours(start, null, routingScheme));
 		
 		ArrayList<Integer> visited = new ArrayList<Integer>();
+		visited.add(0, start);
 		
 		while (!toVisit.isEmpty()) {
 			Hop curHop =  toVisit.remove();
@@ -100,8 +97,8 @@ public class Network {
 	//changes the load for each link in a circuit
 	public void changeLoad(ArrayList<Link> links, int change) {
 		for (Link l: links) {
-			l.setLoad(l.getLoad() + change);
-			this.graph[l.getEnd()][l.getStart()].setLoad(this.graph[l.getEnd()][l.getStart()].getLoad() + change);
+			l.incLoad(change);
+			this.graph[l.getEnd()][l.getStart()].incLoad(change);
 		}
 	}
 	

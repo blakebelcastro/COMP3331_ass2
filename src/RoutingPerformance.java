@@ -120,6 +120,8 @@ public class RoutingPerformance {
 			Action a = actions.remove();
 			a.print();
 			Hop path = network.pathSearch(a.getOrigin(), a.getDestination(), ROUTING_SCHEME);
+			System.out.print(path.getLLPratio() + ":: ");
+			path.printPath();
 			if (path == null) {
 				System.err.println("No path found!");
 			} else if (a.getType() > 0) {

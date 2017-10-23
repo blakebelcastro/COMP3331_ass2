@@ -54,7 +54,6 @@ public class Action implements Comparable<Action> {
 
 	public void print() {
 		System.out.println(type + "\t" + time + "\t");
-		path.printPath();
 	}
 
 	@Override

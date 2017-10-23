@@ -52,7 +52,7 @@ public class RoutingPerformance {
 		
 		//rp.network.print();
 		if (rp.NETWORK_SCHEME.equals("CIRCUIT")) rp.circuitSwitch();
-		//if (rp.NETWORK_SCHEME == "PACKET") rp.packetSwitch();
+		if (rp.NETWORK_SCHEME.equals("PACKET")) rp.packetSwitch();
 		rp.printStats();
 	}
 
@@ -139,6 +139,58 @@ public class RoutingPerformance {
 				}
 				
 			} else if (a.getType() < 0) {
+				network.changeLoad(a.getUnloadPath().linkPath(), a.getType());
+			}
+		}
+	}
+	
+private void packetSwitch() throws FileNotFoundException, InterruptedException {
+		
+	    PriorityQueue<Action> actions = new PriorityQueue<Action>();
+		Scanner in = new Scanner(new FileReader(WORKLOAD_FILE));
+		
+		while(in.hasNextLine()) {
+		    double start = Double.parseDouble(in.next());
+		    String n1 = in.next();
+		    int origin = Network.let2Num(n1);
+		    String n2 = in.next();
+		    int destination = Network.let2Num(n2);
+		    double duration = Double.parseDouble(in.next()); //duration of each connection 
+		    		    
+		    int numPackets = (int) Math.floor(duration*PACKET_RATE);
+		    double interval = 1.0/(double)PACKET_RATE;
+
+		    for (int i = 0; i < numPackets; i++) {
+			    Action p = new Action( (start + ((i+1)*interval) ), origin, destination, Action.UNLOAD);
+			    actions.add(new Action( (start + (i*interval)) , origin, destination, Action.LOAD, 1, p));
+			    actions.add(p);
+		    }
+		    totalRequests++;
+		    totalPackets += numPackets;
+		}
+		in.close();
+		
+		//int i = 0;
+		while (!actions.isEmpty()) {
+			Action a = actions.remove();
+			Hop path = network.pathSearch(a.getOrigin(), a.getDestination(), ROUTING_SCHEME);
+			if (path == null) {
+				System.err.println("No path found!");
+			} else if (a.getType() > 0) {
+				if (network.hasCapacity(path.linkPath())) {
+					a.getPair().setUnloadPath(path);	//prepare the teardown action
+					successfulRequests++;
+					successfulPackets += a.getNumPackets();
+					totalHops += path.getNumHops() + 1;
+					totalPropDelay += path.getTotalDelay();
+					network.changeLoad(path.linkPath(), a.getType());
+				} else {
+					blockedPackets += a.getNumPackets();
+					actions.remove(a.getPair()); //remove the future unload action from queue, not needed
+				}
+				
+			} else if (a.getType() < 0) {
+				//a.print();
 				network.changeLoad(a.getUnloadPath().linkPath(), a.getType());
 			}
 		}

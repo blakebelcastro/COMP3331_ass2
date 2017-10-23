@@ -12,12 +12,12 @@ public class RoutingPerformance {
 	
 	//statistic variables
 	private int totalRequests;		//number of connection requests received
-	private static int successfulRequests; //successful connections made
+	private int successfulRequests; //successful connections made
 	private int totalPackets;		//
-	private static int successfulPackets;
-	private static int blockedPackets;
-	private static int totalHops;
-	private static int totalPropDelay;
+	private int successfulPackets;
+	private int blockedPackets;
+	private int totalHops;
+	private int totalPropDelay;
 
 	
 	public RoutingPerformance(String nETWORK_SCHEME, String rOUTING_SCHEME, String tOPOLOGY_FILE, String wORKLOAD_FILE,
@@ -28,7 +28,7 @@ public class RoutingPerformance {
 		this.TOPOLOGY_FILE = new File(tOPOLOGY_FILE);
 		this.WORKLOAD_FILE = new File(wORKLOAD_FILE);
 		this.PACKET_RATE = Integer.parseInt(pACKET_RATE);
-		this.network = new Network(tOPOLOGY_FILE);
+		this.network = new Network(TOPOLOGY_FILE);
 		
 		this.totalRequests =  0;
 		this.successfulRequests = 0;
@@ -48,11 +48,11 @@ public class RoutingPerformance {
 		}
 		
 		RoutingPerformance rp = new RoutingPerformance(args[0], args[1], args[2], args[3], args[4]);
-		rp.setScheme();
+		rp.setScheme();	
 		
-		
-		rp.network.print();
-		rp.createConnections();
+		//rp.network.print();
+		if (rp.NETWORK_SCHEME.equals("CIRCUIT")) rp.circuitSwitch();
+		//if (rp.NETWORK_SCHEME == "PACKET") rp.packetSwitch();
 		rp.printStats();
 	}
 
@@ -88,7 +88,7 @@ public class RoutingPerformance {
 	//uses info in a text file to create connection events
 	//that attempt to connect and teardown according to their timings
 	
-	private void createConnections() throws FileNotFoundException, InterruptedException {
+	private void circuitSwitch() throws FileNotFoundException, InterruptedException {
 		
 	    PriorityQueue<Action> actions = new PriorityQueue<Action>();
 		
@@ -118,15 +118,15 @@ public class RoutingPerformance {
 		
 		while (!actions.isEmpty()) {
 			Action a = actions.remove();
-			a.print();
+			//a.print();
 			Hop path = network.pathSearch(a.getOrigin(), a.getDestination(), ROUTING_SCHEME);
-			System.out.print(path.getLLPratio() + ":: ");
-			path.printPath();
+			//System.out.print(path.getLLPratio() + ":: ");
+			//path.printPath();
 			if (path == null) {
 				System.err.println("No path found!");
 			} else if (a.getType() > 0) {
 				if (network.hasCapacity(path.linkPath())) {
-					a.getPair().setUnloadPath(path);
+					a.getPair().setUnloadPath(path);	//prepare the teardown action
 					successfulRequests++;
 					successfulPackets += a.getNumPackets();
 					totalHops += path.getNumHops() + 1;
@@ -134,7 +134,7 @@ public class RoutingPerformance {
 					network.changeLoad(path.linkPath(), a.getType());
 				} else {
 					blockedPackets += a.getNumPackets();
-					boolean test = actions.remove(a.getPair());
+					actions.remove(a.getPair()); //remove the future unload action from queue, not needed
 					System.err.println("Connection blocked: link at capacity.");
 				}
 				
@@ -142,14 +142,13 @@ public class RoutingPerformance {
 				network.changeLoad(a.getUnloadPath().linkPath(), a.getType());
 			}
 		}
-		
 	}
 
 	public void setTotalRequests(int totalRequests) {
 		this.totalRequests = totalRequests;
 	}
 
-	public static void incSuccessfulRequests() {
+	public void incSuccessfulRequests() {
 		successfulRequests++;
 	}
 
@@ -157,11 +156,11 @@ public class RoutingPerformance {
 		this.totalPackets = totalPackets;
 	}
 
-	public static void incSuccessfulPackets(int num) {
+	public void incSuccessfulPackets(int num) {
 		successfulPackets+=num;
 	}
 
-	public static void incTotalHops(int num) {
+	public void incTotalHops(int num) {
 		totalHops+=num;
 	}
 
@@ -169,12 +168,11 @@ public class RoutingPerformance {
 		this.totalPropDelay = totalPropDelay;
 	}
 
-	public static void incBlockedPackets(int numPackets) {
+	public void incBlockedPackets(int numPackets) {
 		blockedPackets+=numPackets;
-		
 	}
 
-	public static void incTotalDelay(int totalDelay) {
+	public void incTotalDelay(int totalDelay) {
 		totalPropDelay+=totalDelay;
 	}
 }

@@ -6,9 +6,9 @@ public class Network {
 	private static final int MAX_SIZE = 26;
 	private Link[][] graph;
 
-	public Network(String fileName) throws FileNotFoundException {
+	public Network(File tOPOLOGY_FILE) throws FileNotFoundException {
 		this.graph = new Link[MAX_SIZE][MAX_SIZE];
-		Scanner in = new Scanner(new FileReader(fileName));
+		Scanner in = new Scanner(new FileReader(tOPOLOGY_FILE));
 		while(in.hasNextLine()) {
 		    String n1 = in.next();
 		    String n2 = in.next();

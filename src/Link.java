@@ -37,10 +37,10 @@ public class Link {
 
 	public void incLoad(int i) {
 		this.load += i;
-		if (this.load == -1) {
-			System.out.println("LINK: " + this.start + "->" + this.end + " ");
-			System.exit(0);
-		}
+//		if (this.load == -1) {
+//			System.out.println("LINK: " + this.start + "->" + this.end + " ");
+//			System.exit(0);
+//		}
 	}
 	
 }

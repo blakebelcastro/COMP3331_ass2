@@ -12,7 +12,6 @@ public class Hop implements Comparable<Hop>{
 	
 	public Hop(Link l, Hop h, int n, String rs) {
 		this.link = l;
-		System.out.println("Load: " + l.getLoad());
 		this.prevHop = h;
 		this.numHops = n;
 		int prevDelay = 0;
@@ -20,7 +19,6 @@ public class Hop implements Comparable<Hop>{
 		if (h != null) {
 			prevDelay = h.getTotalDelay();
 			if (llpr < h.getLLPratio()) {
-				System.out.println("From " + llpr +" to " + h.getLLPratio());
 				llpr = h.getLLPratio();
 			}
 		}

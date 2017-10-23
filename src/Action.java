@@ -5,22 +5,27 @@ public class Action implements Comparable<Action> {
 	public static final int UNLOAD = -1;
 	private double time;
 	private int type;
-	private Hop path;
 	private int numPackets = 0;
+	private int origin;
+	private int destination;
+	private Action pair = null;
 	
 	
 	
-	public Action(double time, int type, Hop path, int numPackets) {
+	public Action(double time, int origin, int destination, int type, int numPackets, Action pair) {
 		this.time = time;
+		this.origin = origin;
+		this.destination = destination;
 		this.type = type;
-		this.path = path;
 		this.numPackets = numPackets;
+		this.pair = pair;
 	}
 	
-	public Action(double time, int type, Hop path) {
+	public Action(double time, int origin, int destination, int type) {
 		this.time = time;
+		this.origin = origin;
+		this.destination = destination;
 		this.type = type;
-		this.path = path;
 	}
 	
 	public double getTime() {
@@ -31,17 +36,25 @@ public class Action implements Comparable<Action> {
 		return type;
 	}
 
-	public Hop getPath() {
-		return path;
-	}
-
 	public int getNumPackets() {
 		return numPackets;
 	}
 	
+	public int getOrigin() {
+		return origin;
+	}
+
+	public int getDestination() {
+		return destination;
+	}
+
+	public Action getPair() {
+		return pair;
+	}
+
 	public void print() {
 		System.out.println(type + "\t" + time + "\t");
-//		path.printPath();
+		path.printPath();
 	}
 
 	@Override

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 
 public class Hop implements Comparable<Hop>{
@@ -83,18 +84,25 @@ public class Hop implements Comparable<Hop>{
 	
 	@Override
 	public int compareTo(Hop h) {
+		int retval = 0;
 		if (h == null) {
-			return 0;
+			retval = 0;
 		} else if (h.getRoutingScheme().equals("SHP")) {
-			return (this.numHops - h.getNumHops());
+			retval = (this.numHops - h.getNumHops());
 		} else if (h.getRoutingScheme().equals("SDP")) {
-			return (this.totalDelay - h.getTotalDelay());
+			retval = (this.totalDelay - h.getTotalDelay());
 		} else if (h.getRoutingScheme().equals("LLP")) {
-			if ((this.LLPratio - h.getLLPratio()) < 0) return -1;
-			if ((this.LLPratio - h.getLLPratio()) > 0) return 1;
-			if ((this.LLPratio - h.getLLPratio()) == 0) return 0;
+			System.err.println("are we here?");
+			if ((this.LLPratio - h.getLLPratio()) < 0) retval = -1;
+			if ((this.LLPratio - h.getLLPratio()) > 0) retval = 1;
+			if ((this.LLPratio - h.getLLPratio()) == 0) retval = 0;
 		}
-		return 0;
+		if (retval == 0) {
+			Random rand = new Random(System.currentTimeMillis());
+			retval = rand.nextInt() % 2;
+			if (retval == 0) retval = -1;
+		}
+		return retval;
 		
 	}
 	

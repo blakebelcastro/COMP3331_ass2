@@ -60,12 +60,12 @@ public class RoutingPerformance {
 		System.out.println("total number of virtual connection requests: " + totalRequests);
 		System.out.println("total number of packets: " + totalPackets);
 		System.out.println("number of successfully routed packets: " + successfulPackets);
-		System.out.println("percentage of succesfully routed packets: " + 100*((float)successfulPackets/(float)totalPackets));
+		System.out.println("percentage of succesfully routed packets: " + String.format("%.2f", 100*((float)successfulPackets/(float)totalPackets)));
 		System.out.println("number of blocked packets: " + blockedPackets);
-		System.out.println("percentage of blocked packets: " + 100*((float)blockedPackets/(float)totalPackets));
-		System.out.println("average number of hops per circuit: " + ((float)totalHops/(float)successfulRequests));
+		System.out.println("percentage of blocked packets: " + String.format("%.2f", 100*((float)blockedPackets/(float)totalPackets)));
+		System.out.println("average number of hops per circuit: " + String.format("%.2f", (float)totalHops/(float)successfulRequests));
 		System.out.println("average cumulative propogation delay per circuit: " + ((float)totalPropDelay/(float)successfulRequests));
-		System.out.println("number of successful requests: " + successfulRequests);
+//		System.out.println("number of successful requests: " + successfulRequests);
 	}
 
 	private void setScheme() {
@@ -103,39 +103,40 @@ public class RoutingPerformance {
 		    String n2 = in.next();
 		    int destination = Network.let2Num(n2);
 		    
-		    Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
+//		    Hop path = network.pathSearch(origin, destination, ROUTING_SCHEME);
 
 		    double duration = Double.parseDouble(in.next());
 		    int nP = (int) Math.floor(duration*PACKET_RATE);
 
-		    actions.add(new Action(start, Action.LOAD, path, nP));
-		    actions.add(new Action(start + duration, Action.UNLOAD, path));
+		    Action p = new Action(start + duration, origin, destination, Action.UNLOAD);
+		    actions.add(new Action(start, origin, destination, Action.LOAD, nP, p));
+		    actions.add(p);
 		    totalRequests++;
 		    totalPackets += nP;
 		}
 		in.close();
-//		for (Action a : actions) {
-//			a.print();
-//		}
+		
 		while (!actions.isEmpty()) {
 			Action a = actions.remove();
 			a.print();
-			if (a.getPath() == null) {
+			Hop path = network.pathSearch(a.getOrigin(), a.getDestination(), ROUTING_SCHEME);
+			if (path == null) {
 				System.err.println("No path found!");
 			} else if (a.getType() > 0) {
-				if (network.hasCapacity(a.getPath().linkPath())) {
+				if (network.hasCapacity(path.linkPath())) {
 					successfulRequests++;
 					successfulPackets += a.getNumPackets();
-					totalHops += a.getPath().getNumHops() + 1;
-					totalPropDelay += a.getPath().getTotalDelay();
-					network.changeLoad(a.getPath().linkPath(), a.getType());
+					totalHops += path.getNumHops() + 1;
+					totalPropDelay += path.getTotalDelay();
+					network.changeLoad(path.linkPath(), a.getType());
 				} else {
 					blockedPackets += a.getNumPackets();
+					boolean test = actions.remove(a.getPair());
 					System.err.println("Connection blocked: link at capacity.");
 				}
 				
 			} else if (a.getType() < 0) {
-				network.changeLoad(a.getPath().linkPath(), a.getType());
+				network.changeLoad(path.linkPath(), a.getType());
 			}
 		}
 		
